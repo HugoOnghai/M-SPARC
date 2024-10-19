@@ -44,6 +44,10 @@ Flag_cell = 0;
 Flag_latvec_scale = 0;
 Flag_kptshift = 0;
 
+% Added two more Flags
+Flag_kpoints_path = 0;
+Flag_kpoints_grid = 0;
+
 while(~feof(fid1))
 	C_inpt = textscan(fid1,'%s',1,'delimiter',' ','MultipleDelimsAsOne',1);
 	str = char(C_inpt{:}); % for R2016b and later, can use string()
@@ -157,13 +161,60 @@ while(~feof(fid1))
 		C_param = textscan(fid1,'%f',1,'delimiter',' ','MultipleDelimsAsOne',1);
 		S.ecut = C_param{1};
 		textscan(fid1,'%s',1,'delimiter','\n','MultipleDelimsAsOne',0); % skip current line
-	elseif (strcmp(str,'MESH_SPACING:'))
+	
+    %%% ADDING SUPPORT FOR CUSTOM KPOINT PATHS. %%%
+    %% Hugo Onghai, Ab Initio Lab @ UCLA %%
+    %% October 19th, 2024
+       
+    elseif (strcmp(str, 'KPOINTS_PATH:')) 
+    % Print debug message
+    fprintf('Reading KPOINTS_PATH...\n');
+    
+    Flag_kpoints_path = 1;
+    
+    % Initialize k-points path count
+    kpoint_path_count = 0;
+    
+    % Allocate storage for k-points path
+    if ~isfield(S, 'KpointsPath')
+        S.KpointsPath = [];
+    end
+    
+    % Read KPOINTS_PATH values in the same format as COORD
+    while true
+        % Read the next line to get k-point coordinates
+        C_param = textscan(fid1, '%f %f %f', 1, 'delimiter', ' ', 'MultipleDelimsAsOne', 1);
+        
+        % Break if end of file or no valid input found
+        if isempty(C_param{1}) || feof(fid1)
+            break;
+        end
+        
+        % Increment the k-points path count
+        kpoint_path_count = kpoint_path_count + 1;
+        
+        % Store the read k-point coordinates
+        S.KpointsPath(kpoint_path_count, 1) = C_param{1};
+        S.KpointsPath(kpoint_path_count, 2) = C_param{2};
+        S.KpointsPath(kpoint_path_count, 3) = C_param{3};
+        
+        % Skip the current line
+        textscan(fid1, '%s', 1, 'delimiter', '\n', 'MultipleDelimsAsOne', 0);
+    end
+    
+    fprintf('Total number of k-points in path: %d\n', kpoint_path_count);
+    
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+    elseif (strcmp(str,'MESH_SPACING:'))
 		C_param = textscan(fid1,'%f',1,'delimiter',' ','MultipleDelimsAsOne',1);
 		S.mesh_spacing = C_param{1}; % mesh spacing
 		textscan(fid1,'%s',1,'delimiter','\n','MultipleDelimsAsOne',0); % skip current line
 	elseif (strcmp(str,'KPOINT_GRID:'))
 		C_param = textscan(fid1,'%f %f %f',1,'delimiter',' ','MultipleDelimsAsOne',1);
-		S.nkpt = cell2mat(C_param);
+		Flag_kpoints_grid = 1;
+        S.nkpt = cell2mat(C_param);
 		textscan(fid1,'%s',1,'delimiter','\n','MultipleDelimsAsOne',0); % skip current line
 	elseif (strcmp(str,'KPOINT_SHIFT:'))	
 		C_param = textscan(fid1,'%f %f %f',1,'delimiter',' ','MultipleDelimsAsOne',1);	
@@ -704,6 +755,11 @@ end
 % check CELL and LATVEC_SCALE
 if Flag_cell == 1 && Flag_latvec_scale == 1
     error('\nCELL and LATVEC_SCALE cannot be specified simultaneously!\n');
+end
+
+%%%% check KPOINT_GRID and KPOINTS_PATH %%%% 
+if Flag_kpoints_grid == 1 && Flag_kpoints_path == 1
+    error('\nKPOINT_GRID and KPOINTS_PATH cannot be specified simultaneously!\n')
 end
 
 % LACVEC_SCALE takes into account the length of the LATVEC's, so we'll scale the cell lengths

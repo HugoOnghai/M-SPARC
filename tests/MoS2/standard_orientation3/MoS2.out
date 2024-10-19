@@ -1,0 +1,81 @@
+***************************************************************************
+*                      M-SPARC v1.0.0 (Nov 16, 2022)                      *
+*   Copyright (c) 2019 Material Physics & Mechanics Group, Georgia Tech   *
+*           Distributed under GNU General Public License 3 (GPL)          *
+*                Date: 19-Oct-2024  Start time: 14:51:54                  *
+***************************************************************************
+                           Input parameters                                
+***************************************************************************
+LATVEC_SCALE: 6.100000 30.000000 6.100000 
+LATVEC:
+-0.500000000000000 0.866600000000000 0.000000000000000 
+0.000000000000000 0.000000000000000 1.000000000000000 
+1.000000000000000 0.000000000000000 0.000000000000000 
+FD_GRID: 24 120 24
+FD_ORDER: 12
+BC: P D P
+KPOINT_GRID: 2 1 2
+KPOINT_SHIFT: 5.000000e-01 0 5.000000e-01
+ELEC_TEMP_TYPE: fermi-dirac
+SMEARING: 0.000999993
+CHEB_DEGREE: 29
+NSTATES: 21
+EXCHANGE_CORRELATION: GGA_PBE
+CALC_STRESS: 1
+MAXIT_SCF: 100
+TOL_SCF: 1.00E-06
+TOL_POISSON: 1.00E-08
+TOL_LANCZOS: 1.00E-02
+TOL_PSEUDOCHARGE: 1.00E-08
+MIXING_VARIABLE: potential
+MIXING_PRECOND: none
+MIXING_PARAMETER: 0.30
+MIXING_HISTORY: 7
+PULAY_FREQUENCY: 1
+PULAY_RESTART: 0
+REFERENCE_CUTOFF: 0.50
+RHO_TRIGGER: 4
+FIX_RAND: 0
+PRINT_FORCES: 1
+PRINT_ATOMS: 0
+PRINT_EIGEN: 0
+PRINT_DENSITY: 0
+OUTPUT_FILE: C:\Users\ongha\OneDrive\Documents\GitHub\M-SPARC\tests\MoS2\standard_orientation3\MoS2.out
+***************************************************************************
+                                Cell                                       
+***************************************************************************
+Lattice vectors:
+-3.049999999999999 5.286260000000000 0.000000000000000 
+0.000000000000000 0.000000000000000 30.000000000000000 
+6.100000000000000 0.000000000000000 0.000000000000000 
+Volume                  :  9.6738558000E+02 (Bohr^3)
+***************************************************************************
+                             Initialization                                
+***************************************************************************
+Mesh spacing in x-direction        :  0.254293 (Bohr)
+Mesh spacing in y-direction        :  0.250000 (Bohr)
+Mesh spacing in z direction        :  0.254167 (Bohr)
+Number of symmetry adapted k-points:  2
+Output printed to                  :  C:\Users\ongha\OneDrive\Documents\GitHub\M-SPARC\tests\MoS2\standard_orientation3\MoS2.out
+Total number of atom types         :  2
+Total number of atoms              :  3
+Total number of electrons          :  26
+Atom type 1  (valence electrons)   :  Mo 14
+Pseudopotential                    :  ../../../psps/42_Mo_14_2.0_2.6_pbe_n_v1.0.psp8
+lloc                               :  4
+Pseudocharge radii of atom type 1  :  7.88 7.88 7.88
+Number of atoms of type 1          :  1
+Atom type 2  (valence electrons)   :  S 6
+Pseudopotential                    :  ../../../psps/16_S_6_1.8_1.9_pbe_n_v1.0.psp8
+lloc                               :  4
+Pseudocharge radii of atom type 2  :  7.88 7.88 7.88
+Number of atoms of type 2          :  2
+Estimated total memory usage       :  373.28 MB
+=====================================================================
+                    Self Consistent Field (SCF#1)                     
+=====================================================================
+Iteration     Free Energy (Ha/atom)   SCF Error        Timing (sec)
+1            -3.0604636355E+01        2.537E-01        76.980
+2            -3.0155368757E+01        9.192E-01        76.981
+3            -3.0674791251E+01        2.796E-01        29.225
+4            -3.0718527908E+01        1.016E-01        30.367
